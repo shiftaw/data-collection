@@ -18,7 +18,7 @@ app.use(cookieParser())
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors())
-app.use(express.static('build'))
+app.use(express.static('public'))
 
 const mongooseDebug = true
 const mongoUri =
