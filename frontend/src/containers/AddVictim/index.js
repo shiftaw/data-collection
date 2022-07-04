@@ -21,7 +21,7 @@ export default function AddVictim() {
     console.log(state)
 
     axios
-      .post('http://localhost:4000/victim', { ...state })
+      .post('/victim', { ...state })
       .then((res) => {
         console.log(res.data)
       })
