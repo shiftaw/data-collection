@@ -58,6 +58,9 @@
   background-color: #ddd;
   color: black;
 }
+.btn:disabled {
+  background-color: #ddd;
+}
 
 @keyframes App-logo-spin {
   from {

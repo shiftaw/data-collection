@@ -5,7 +5,7 @@ import './styles.scss'
 export default function DataAndReports() {
   const [data, setData] = useState([])
   useEffect(() => {
-    axios.get('/victim').then((res) => setData(res.data))
+    axios.get('http://localhost:4000/victim').then((res) => setData(res.data))
   }, [])
   return (
     <div

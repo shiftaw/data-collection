@@ -1,32 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './styles.scss'
+import ClipLoader from 'react-spinners/ClipLoader'
+import { SpinnerCircular } from 'spinners-react'
 
 import Input from '../../components/Input'
 import GenderSelector from '../../components/GenderSelector'
 
 export default function AddVictim() {
   const [state, setState] = useState({
-    fName: 'ggdog',
-    lName: 'dss',
+    fName: '',
+    lName: '',
     age: 20,
-    sex: 'Female',
+    sex: 'F',
     region: 'Oromia',
     zone: 'Zone',
     woreda: 'woreda',
     kebelle: 'Kebele',
   })
 
+  const [loading, setLoading] = useState(false)
+
   const handleSubmit = () => {
     console.log(state)
-
+    setLoading(true)
     axios
-      .post('/victim', { ...state })
+      .post('http://localhost:4000/victim', { ...state })
       .then((res) => {
-        console.log(res.data)
+        setLoading(false)
+        setState({
+          ...state,
+          fName: '',
+          lName: '',
+          age: 20,
+        })
       })
       .catch((e) => {
         console.log(e)
+        setLoading(false)
       })
   }
 
@@ -37,6 +48,19 @@ export default function AddVictim() {
         [name]: e.target.value,
       })
     }
+  }
+
+  const isValid = () => {
+    return (
+      state.fName &&
+      state.lName &&
+      state.sex &&
+      state.region &&
+      state.woreda &&
+      state.zone &&
+      state.region &&
+      state.age
+    )
   }
 
   return (
@@ -65,7 +89,10 @@ export default function AddVictim() {
 
       <div className='add-name-container-full'>
         <div className='add-container-label'>Gender</div>
-        <GenderSelector selected={state.sex} />
+        <GenderSelector
+          selected={state.sex}
+          onSelect={(value) => setState({ ...state, sex: value })}
+        />
       </div>
 
       <div className='add-name-container-full'>
@@ -86,6 +113,7 @@ export default function AddVictim() {
           <Input
             placeholder={'Select region'}
             list='region'
+            value={state.region}
             onChange={onValueChanged('region')}
           ></Input>
         </div>
@@ -129,7 +157,16 @@ export default function AddVictim() {
           transform: 'translate(50%,0)',
         }}
       >
-        <button className='btn' onClick={handleSubmit}>
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            zIndex: 2,
+          }}
+        >
+          <SpinnerCircular enabled={loading} />
+        </div>
+        <button className='btn' onClick={handleSubmit} disabled={!isValid()}>
           Submit
         </button>
       </div>
